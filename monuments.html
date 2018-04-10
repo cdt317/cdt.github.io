@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monument</title>
+  <link href="bootstrap.css" rel="stylesheet">
+  <link href="navbar-fixed-right.min.css" rel="stylesheet">
+  <!-- <link href="main.css" rel="stylesheet"> -->
+  <!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,900,200' rel='stylesheet' type='text/css'> -->
+  <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet"> -->
+  <link rel="icon" type="image/png" href="images/f.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="style2.css">
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="./jquery.mCustomScrollbar.min.css">
+
+  <script type="text/javascript">
+    var artistArr = 0;
+    var currentMonument = 0;
+    var monVar = localStorage.getItem("monVar");
+    if (monVar == null){
+      monVar = 0;
+    }
+    else 
+    {
+      monVar = parseInt(monVar);
+    }
+  	window.addEventListener("load", function() {
+      var xmlhttp = new XMLHttpRequest();
+      var url = "data.json";
+
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            artistArr = JSON.parse(this.responseText);
+            loadLink(artistArr, monVar);
+        }
+      };
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+    },false);
+
+
+    function loadLink(arr, num)
+    {
+      $("#test").attr("src",arr.artists[num].link);
+      $("#monTitle").html(arr.artists[num].title);
+      $("#artistText").html(arr.artists[num].name);
+      $("#statementText").html(arr.artists[num].statement);
+      currentMonument = num;
+
+    }
+    function loadMonument(num)
+    {
+    	
+      $("#test").fadeOut(1000);
+      $(".title").fadeOut(1000);
+      $(".artist").fadeOut(1000);
+      $(".statement").fadeOut(1000);
+    	setTimeout(function(){
+        loadLink(artistArr, num);
+        $("#test").fadeIn(1000);
+        $(".title").fadeIn(1000);
+        $(".artist").fadeIn(1000);
+        $(".statement").fadeIn(1000);
+      }, 1000);
+    }
+
+    function loadPrevious()
+    {
+      var prevMonument = 0;
+      if(currentMonument ==0)
+      {
+        prevMonument = 18;
+      }
+      else
+      {
+        prevMonument = currentMonument-1;
+      }
+      loadMonument(prevMonument);
+    }
+
+    function loadNext()
+    {
+      var nextMonument = 0;
+      if(currentMonument == 18)
+      {
+        nextMonument = 0;
+      }
+      else
+      {
+        nextMonument = currentMonument+1;
+      }
+      loadMonument(nextMonument);
+    }
+
+    function dismiss() {
+        $('#sidebar').removeClass('active');
+        $('.overlay').fadeOut();
+      };
+
+  </script>
+
+
+</head>
+<body>
+
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+<!-- <div id="dismiss">
+<i class="glyphicon glyphicon-arrow-left"></i>
+</div> -->
+
+<div class="sidebar-header">
+  <h3>Augmented Awareness</h3>
+</div>
+
+<ul class="list-unstyled components">
+  <p>Hi lol</p>
+  <li class="active">
+    <a href="/index.html">Home</a>
+  </li>
+  <li>
+    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Monuments</a>
+    <ul class="collapse list-unstyled" id="homeSubmenu">
+      <li><a href="#" onclick="loadMonument(0); dismiss();">Covered</a></li>
+      <li><a href="#" onclick="loadMonument(1); dismiss();">Salute Monument</a></li>
+      <li><a href="#" onclick="loadMonument(2); dismiss();">Monument 3</a></li>
+      <li><a href="#" onclick="loadMonument(3); dismiss();">Monument 4</a></li>
+      <li><a href="#" onclick="loadMonument(4); dismiss();">Monument 5</a></li>
+      <li><a href="#" onclick="loadMonument(5); dismiss();">Fearless Lady</a></li>
+      <li><a href="#" onclick="loadMonument(6); dismiss();">5 POINTZ Memorial</a></li>
+      <li><a href="#" onclick="loadMonument(7); dismiss();">Monument 8</a></li>
+      <li><a href="#" onclick="loadMonument(8); dismiss();">Sweet Nostalgia</a></li>
+      <li><a href="#" onclick="loadMonument(9); dismiss();">Monument 10</a></li>
+      <li><a href="#" onclick="loadMonument(10); dismiss();">Monument 11</a></li>
+      <li><a href="#" onclick="loadMonument(11); dismiss();">Marsha and Counting</a></li>
+      <li><a href="#" onclick="loadMonument(12); dismiss();">Construction Workers Memorial Site</a></li>
+      <li><a href="#" onclick="loadMonument(13); dismiss();">Monument 14</a></li>
+      <li><a href="#" onclick="loadMonument(14); dismiss();">Fwlr</a></li>
+      <li><a href="#" onclick="loadMonument(15); dismiss();">Melting Pot</a></li>
+      <li><a href="#" onclick="loadMonument(16); dismiss();">Monument to Everybody Wanna Live at the Top of a Mountain</a></li>
+      <li><a href="#" onclick="loadMonument(17); dismiss();">Twin Towers</a></li>
+      <li><a href="#" onclick="loadMonument(18); dismiss();">Taiwanese Train During Japanese Colonial Period</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="/Artists.html">Artists</a>
+  </li>
+  <li>
+    <a href="#">About</a>
+  </li>
+  <li>
+    <a href="#">Contact</a>
+  </li>
+</ul>
+</nav>
+
+<!-- Page Content Holder -->
+<div id="content">
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+      <div class="navbar-header">
+        <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+          <span>Explore</span>
+        </button>
+      </div>
+      <div class="headTitle">
+        <a href="index.html">Augmented Awareness</a>
+      </div>
+
+</div>
+</nav>
+
+<div class="jumbotron">
+  <div class="container">
+
+
+    
+    <div class="row">
+      <div class="col-lg-6 offset-lg-3">
+        <div class="sketchfab-embed-wrapper"><iframe id='test' width="100%" height="480" src="" frameborder="0" allowvr allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe> </div>
+      </div>
+    </div>
+    <div class ="row">
+      <div class="col-lg-6 offset-lg-3">
+        <h1>   </h1>
+        <h1 class="title"><span id="monTitle"></span></h1>
+        <h2 class="artist"> <span id="artistText"></span></h2>
+        <p class="statement"> <span id="statementText"></span></p>
+      </div>
+    </div>
+    <div class ="row" id="direction">
+      <div class="col-lg-1">
+        <a href="#" onclick="loadPrevious()">&lt;</a>
+      </div>
+      <div class="col-lg-1 offset-lg-10 text-right">
+        <a href="#" onclick="loadNext()">&gt;</a>
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+  </div>
+
+
+
+</div>
+</div>
+
+</div>
+
+
+
+<div class="overlay"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="bootstrap.js"></script>
+<!-- jQuery Custom Scroller CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#sidebar").mCustomScrollbar({
+      theme: "minimal"
+    });
+
+    $('#dismiss, .overlay').on('click', function () {
+      $('#sidebar').removeClass('active');
+      $('.overlay').fadeOut();
+    });
+
+    $('#sidebarCollapse').on('click', function () {
+      $('#sidebar').addClass('active');
+      $('.overlay').fadeIn();
+      $('.collapse.in').toggleClass('in');
+      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    });
+  });
+</script>
+
+
+</body>
+</html>
